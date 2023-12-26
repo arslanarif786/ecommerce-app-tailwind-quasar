@@ -50,11 +50,15 @@
         clearable
         class="q-mb-md w-80 h-13"
       />
-      <q-btn type="submit" color="secondary" label="Register" class="q-mt-md w-80 h-13" /><RouterLink to="/login" class="gt-xs text-sm/[20px] mt-5 mb-5"><strong>Login</strong></RouterLink>
+      <q-btn type="submit" color="secondary" label="Register" class="q-mt-md w-80 h-13" />
+      <span class="pt-2"><q-checkbox size="xs" v-model="right" /> I agree with <RouterLink to="#" class="text-sm/[20px] text-[#3683cd]">the Privacy Policy</RouterLink></span>
+      <RouterLink to="/login" class="gt-xs text-sm/[20px] mt-5 mb-5"><strong>Login</strong></RouterLink>
     </q-form>
 </template>
 <script setup>
 import { ref } from 'vue'
+
+const right = ref(true)
 
 const username = ref('')
 const password = ref('')
@@ -64,6 +68,6 @@ const phone = ref('')
 const address = ref('')
 
 const register = () => {
-  console.log('Register with:', { username: username.value, password: password.value, confirmPassword: confirmPassword.value, email: email.value, phone: phone.value, address: address.value})
+  console.log('Register with:', { username: username.value, password: password.value, confirmPassword: confirmPassword.value, email: email.value, phone: phone.value, address: address.value, right: right.value})
 }
 </script>
