@@ -37,6 +37,6 @@ const password = ref('')
 const confirmPassword = ref('')
 
 const register = () => {
-  console.log('Logging in with:', { username: username.value, password: password.value, confirmPassword: confirmPassword.value })
+  console.log('Register with:', { username: username.value, password: password.value, confirmPassword: confirmPassword.value })
 }
 </script>
