@@ -17,7 +17,7 @@
           clearable
           class="q-mb-md w-80 h-13"
         />
-        <q-btn type="submit" color="secondary" label="Login" class="q-mt-md w-80 h-13" /><RouterLink to="/register" class="gt-xs text-sm/[20px] mt-5 mb-5"><strong>Register</strong></RouterLink>
+        <q-btn type="submit" color="secondary" label="Login" class="q-mt-md w-80 h-13" /><RouterLink to="/forgotPassword" class="gt-xs text-sm/[20px] mt-5 mb-5"><strong>Forgot Password</strong></RouterLink>
       </q-form>
   </template>
   <script setup>
