@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[#ffff00] min-h-40 p-20">
+    <div class="bg-[#ffff00] min-h-40 p-20" id="newsletter">
         <div class="flex flex-row justify-center">
             <span class="pt-5 mr-8"><strong>SUBSCRIBE TO OUR NEWSLETTER</strong></span>
             <q-input outlined v-model="ph" placeholder="Enter Your Email Address" class="bg-white h-13 w-80 mr-3" />

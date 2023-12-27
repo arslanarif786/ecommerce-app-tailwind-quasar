@@ -4,7 +4,7 @@ const menuTopBar2 = [ "NEW IN", "CLOTHES", "SHOES", "BAGS", "ACCESSORIES", "BEAU
 </script>
 <template>
     <q-bar class="!bg-[#2a2b32] text-white">
-        <RouterLink to="#" class="text-sm/[20px]">Sign Up for Newsletter</RouterLink>
+        <a href="#newsletter" class="text-sm/[20px]">Sign Up for Newsletter</a>
         <q-space />
         <RouterLink to="/register" class="gt-xs text-sm/[20px]"><strong>Register</strong> /
         </RouterLink>
