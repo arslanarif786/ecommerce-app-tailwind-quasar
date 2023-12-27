@@ -18,7 +18,7 @@
             clearable
             class="q-mb-md w-80 h-13"
           />
-          <q-btn type="submit" color="secondary" label="Login" class="q-mt-md w-80 h-13" />
+          <q-btn type="submit" label="Login" class="!bg-gray-700 !text-white q-mt-md w-80 h-13" />
           <RouterLink to="/forgot-password" class="gt-xs text-sm/[20px] mx-5 mt-5 mb-5"><strong>Forgot Password</strong></RouterLink>
         </div>
       </q-form>

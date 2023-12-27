@@ -9,7 +9,7 @@
           clearable
           class="q-mb-md w-80 h-13"
         />
-        <q-btn type="submit" color="secondary" label="Reset Password" class="q-mt-md w-80 h-13 mb-3" />
+        <q-btn type="submit" label="Reset Password" class="!bg-gray-700 !text-white q-mt-md w-80 h-13 mb-3" />
     </div>
   </q-form>
 </template>

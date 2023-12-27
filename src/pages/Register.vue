@@ -51,7 +51,7 @@
             clearable
             class="q-mb-md w-80 h-13"
           />
-          <q-btn type="submit" color="secondary" label="Register" class="q-mt-md w-80 h-13 mb-5" />
+          <q-btn type="submit" label="Register" class="!bg-gray-700 !text-white q-mt-md w-80 h-13 mb-5" />
           <span class="pt-2"><q-checkbox size="xs" v-model="right" /> I agree with <RouterLink to="#" class="text-sm/[20px] text-[#3683cd]">the Privacy Policy</RouterLink></span>
           <br><RouterLink to="/login" class="gt-xs text-sm/[20px]"><strong>If You Have An Account, Please Login</strong></RouterLink>
     </div>
