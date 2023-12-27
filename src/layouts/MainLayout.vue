@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
 
-    <Topbar />
+    <TopBar />
 
     <!-- <q-header elevated>
       <q-toolbar>
@@ -53,7 +53,7 @@
 
 <script setup>
 // import { defineComponent, ref } from 'vue'
-import Topbar from '../layouts/Topbar.vue'
+import TopBar from '../layouts/TopBar.vue'
 import YellowSection from '../layouts/YellowSection.vue'
 import Footer from '../layouts/Footer.vue'
 </script>

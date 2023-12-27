@@ -3,8 +3,7 @@
         <div class="flex flex-row justify-center">
             <span class="pt-5 mr-8"><strong>SUBSCRIBE TO OUR NEWSLETTER</strong></span>
             <q-input outlined v-model="ph" placeholder="Enter Your Email Address" class="bg-white h-13 w-80 mr-3" />
-            <q-btn style="background-color: #4e4e5e; color: white; height: 50px; width: 320px;" label="Check-in" />
-            <!-- <q-btn class="bg-gray-700 text-white h-50 w-80" label="Check-in" /> -->
+            <q-btn class="!bg-gray-700 !text-white !h-13 !w-80" label="Check-in" />
         </div>
         <div class="flex flex-row justify-center pt-3">
             <q-checkbox size="xs" v-model="right" class="bg-white mr-3" />
