@@ -42,7 +42,7 @@
       </div>
   
       <!-- Pagination -->
-      <div class="pagination mx-20 my-5 col-span-12">
+      <div class="pagination mx-20 my-5 col-start-4 col-span-9">
         <q-pagination v-model="currentPage" :max="totalPages" @input="updatePage" />
       </div>
     </q-page>
