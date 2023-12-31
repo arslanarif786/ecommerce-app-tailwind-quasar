@@ -8,7 +8,7 @@
         <!-- Image Gallery -->
         <div class="flex mt-2">
           <img
-            v-for="(image, index) in product.imageGallery"
+            v-for="(image, index) in singleProduct.product.imageGallery"
             :key="index"
             :src="image"
             alt="Gallery Image"
@@ -21,9 +21,9 @@
       <!-- Product Details Section -->
       <div class="lg:w-1/2 p-4">
         <!-- Product Details -->
-        <h1 class="text-2xl font-semibold">{{ product.name }}</h1>
-        <p class="text-gray-600">{{ product.description }}</p>
-        <p class="text-lg font-bold mt-4">{{ product.price }}</p>
+        <h1 class="text-2xl font-semibold">{{ singleProduct.product.name }}</h1>
+        <p class="text-gray-600">{{ singleProduct.product.description }}</p>
+        <p class="text-lg font-bold mt-4">{{ singleProduct.product.price }}</p>
   
         <!-- Quantity Section -->
         <div class="flex items-center mt-4">
@@ -32,7 +32,7 @@
         </div>
         <!-- Attributes -->
         <div class="mt-4">
-        <p class="text-gray-700"><strong>Size: {{ product.size }}</strong></p>
+        <p class="text-gray-700"><strong>Size: {{ singleProduct.product.size }}</strong></p>
         <!-- Add more attributes as needed -->
         </div>
   
@@ -55,14 +55,14 @@
       <!-- Content based on the selected tab -->
       <div v-show="activeTab === 'description'" class="mt-4">
         <h2 class="text-xl font-semibold mb-4">Product Description</h2>
-        <p>{{ product.description }}</p>
+        <p>{{ singleProduct.product.description }}</p>
       </div>
   
       <div v-show="activeTab === 'moreInfo'" class="mt-4">
         <h2 class="text-xl font-semibold mb-4">More Info</h2>
         <ul>
-          <li>Material: {{ product.material }}</li>
-          <li>Color: {{ product.color }}</li>
+          <li>Material: {{ singleProduct.product.material }}</li>
+          <li>Color: {{ singleProduct.product.color }}</li>
           <!-- Add more info as needed -->
         </ul>
       </div>
@@ -74,7 +74,7 @@
   
       <div v-show="activeTab === 'shipping'" class="mt-4">
         <h2 class="text-xl font-semibold mb-4">Shipping</h2>
-        <p>{{ product.shippingInfo }}</p>
+        <p>{{ singleProduct.product.shippingInfo }}</p>
       </div>
     </div>
       <div class="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8">
@@ -103,35 +103,38 @@
   
   <script setup>
   import { ref } from 'vue';
+  import { useSingleProduct } from '../stores/singleProduct.js'
+  const singleProduct = useSingleProduct()
   
-  const product = ref({
-    name: "Tommy Hilfiger Women's Jacket",
-    description: "Stylish women's jacket with a hood from Tommy Hilfiger.",
-    price: "$120.00",
-    imageUrl: "https://remiks.com/media/catalog/product/cache/3a94dccb1b2fbf2ba369a22195785beb/t/h/thdw0dw09060-bds-1_99712.jpg",
-    imageGallery: [
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-2_61613.jpg",
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-3_29465.jpg",
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-4_62726.jpg",
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-5_55112.jpg",
-      // Add more gallery images as needed
-    ],
-    material: "Cotton",
-    color: "Navy Blue",
-    shippingInfo: "Free shipping on orders over $50.00",
-    size: "Medium",
-  })
+  // const product = ref({
+  //   name: "Tommy Hilfiger Women's Jacket",
+  //   description: "Stylish women's jacket with a hood from Tommy Hilfiger.",
+  //   price: "$120.00",
+  //   imageUrl: "https://remiks.com/media/catalog/product/cache/3a94dccb1b2fbf2ba369a22195785beb/t/h/thdw0dw09060-bds-1_99712.jpg",
+  //   imageGallery: [
+  //     "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-2_61613.jpg",
+  //     "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-3_29465.jpg",
+  //     "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-4_62726.jpg",
+  //     "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-5_55112.jpg",
+  //     // Add more gallery images as needed
+  //   ],
+  //   material: "Cotton",
+  //   color: "Navy Blue",
+  //   shippingInfo: "Free shipping on orders over $50.00",
+  //   size: "Medium",
+  // })
   
   const quantity = ref(1)
-  const currentImage = ref(product.value.imageUrl)
+  const currentImage = ref(singleProduct.product.imageUrl)
   const activeTab = ref('description')
   
+
   const addToCart = () => {
-    console.log(`Added ${quantity.value} ${product.value.name}(s) to the cart.`)
+    console.log(`Added ${quantity.value} ${singleProduct.product.name}(s) to the cart.`)
   }
   
   const changeImage = (index) => {
-    currentImage.value = product.value.imageGallery[index]
+    currentImage.value = singleProduct.product.imageGallery[index]
   }
 
   const products = [

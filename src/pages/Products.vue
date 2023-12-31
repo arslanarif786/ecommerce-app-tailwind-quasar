@@ -76,10 +76,22 @@
       id: i,
       name: `Product ${i}`,
       href: '#',
-      imageSrc: imagesUrlArray[imageUrlArrayIndex],
+      imageUrl: imagesUrlArray[imageUrlArrayIndex],
       imageAlt: `Product ${i} Image`,
       price: `$${Math.floor(Math.random() * 500) + 50}`,
       color: colors[colorIndex],
+      ///// you can change it bojan
+      description: "Stylish women's jacket with a hood from Tommy Hilfiger.",
+      material: "Cotton",
+      shippingInfo: "Free shipping on orders over $50.00",
+      size: "Medium",
+      imageGallery: [
+        "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-2_61613.jpg",
+        "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-3_29465.jpg",
+        "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-4_62726.jpg",
+        "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-5_55112.jpg",
+        // Add more gallery images as needed
+      ],
     });
   }
   
