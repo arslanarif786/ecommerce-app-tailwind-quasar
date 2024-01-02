@@ -1,16 +1,32 @@
 <script setup>
+import { ref } from 'vue';
+
+const loginUser = ref(JSON.parse(localStorage.getItem('loginUser')))
+
+const logout = () => {
+    console.log('running logout--->')
+    localStorage.removeItem('loginUser')
+    loginUser.value = {}
+    window.location.href = '/login'
+}
+
 const menuTopBar = ["WOMEN", "MEN", "BOYS", "GIRLS", "BRANDS", "HELP"]
 const menuTopBar2 = [ "NEW IN", "CLOTHES", "SHOES", "BAGS", "ACCESSORIES", "BEAUTY", "OUTLET"]
 </script>
 <template>
     <q-bar class="!bg-[#2a2b32] text-white">
         <a href="#newsletter" class="text-sm/[20px]">Sign Up for Newsletter</a>
-        <RouterLink to="/products" class="text-sm/[20px] ml-5">Products</RouterLink>
-        <RouterLink to="/dashboard" class="gt-xs text-sm/[20px] ml-10">Dashboard</RouterLink>
+        <RouterLink v-if="loginUser" to="/products" class="text-sm/[20px] ml-5">Products</RouterLink>
+        <RouterLink v-if="loginUser" to="/dashboard" class="gt-xs text-sm/[20px] ml-10">Dashboard</RouterLink>
         <q-space />
-        <RouterLink to="/register" class="gt-xs text-sm/[20px]"><strong>Register</strong> /
+
+        <!-- only before login case -->
+        <RouterLink v-if="!loginUser" to="/register" class="gt-xs text-sm/[20px]"><strong>Register</strong> /
         </RouterLink>
-        <RouterLink to="/login" class="text-sm/[20px]">Login</RouterLink>
+        <RouterLink v-if="!loginUser" to="/login" class="text-sm/[20px]">Login</RouterLink>
+
+        <!-- only after login case -->
+        <RouterLink v-else-if="loginUser" to="/login" @click="logout" class="text-sm/[20px]">logout</RouterLink>
     </q-bar>
     <q-toolbar
         class="text-center !bg-white text-#2a2b32 h-[71px] !sticky top-0 z-40">

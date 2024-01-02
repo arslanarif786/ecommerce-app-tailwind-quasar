@@ -25,11 +25,25 @@
   </template>
   <script setup>
   import { ref } from 'vue'
+  // import { useRouter } from 'vue-router'
+  // const router = useRouter()
 
   const username = ref('')
   const password = ref('')
 
   const login = () => {
-    console.log('Logging in with:', { username: username.value, password: password.value })
+    const loginObj = { username: username.value, password: password.value }
+    const users = JSON.parse(localStorage.getItem('users'))
+    // comparison
+    const matched = users.find(item => item.username === loginObj.username && item.password === loginObj.password)
+    
+    // redirect
+    if (matched) {
+      localStorage.setItem('loginUser', JSON.stringify(loginObj))
+      window.location.href = '/'
+      // router.push({path: `/`})
+    } else {
+      console.log('invalid username or incorrect password')
+    }
 }
   </script>

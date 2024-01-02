@@ -59,6 +59,9 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import { useAuthUser} from '../stores/authUser.js'
+
+const authUser = useAuthUser()
 
 const right = ref(true)
 
@@ -80,5 +83,17 @@ const register = () => {
     address: address.value, 
     right: right.value
   })
+  const user = { 
+    username: username.value, 
+    password: password.value, 
+    confirmPassword: 
+    confirmPassword.value, email: 
+    email.value, phone: 
+    phone.value, 
+    address: address.value, 
+    right: right.value
+  }
+  authUser.users.push(user)
+  localStorage.setItem('users', JSON.stringify(authUser.users))
 }
 </script>
