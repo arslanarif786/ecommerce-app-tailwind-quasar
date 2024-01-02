@@ -6,7 +6,7 @@
       <q-list>
         <!-- Text Search Filter -->
         <q-item>
-          <q-input v-model="searchText" placeholder="Search..." dense />
+          <q-input v-model="searchText" placeholder="Search Product Name" dense />
         </q-item>
 
         <!-- Price Range Filter -->
@@ -118,8 +118,12 @@ const imagesUrlArray = [
 
 const products = [];
 for (let i = 1; i <= 100; i++) {
-  const colorIndex = (i - 1) % colors.length;
+  const colorIndex = (i - 1) % colors.value.length;
   const imageUrlArrayIndex = (i - 1) % imagesUrlArray.length;
+
+  const productColor = colors.name;
+  //const colorName = productColor ? productColor.name : 'UndefinedColor';
+
   products.push({
     id: i,
     name: `Product ${i}`,
@@ -127,23 +131,22 @@ for (let i = 1; i <= 100; i++) {
     imageUrl: imagesUrlArray[imageUrlArrayIndex],
     imageAlt: `Product ${i} Image`,
     price: `$${Math.floor(Math.random() * 500) + 50}`,
-    color: colors[colorIndex],
+    color: colors.value[colorIndex].name,
     ///// you can change the color to be an array of colors
     description: "Stylish women's jacket with a hood from Tommy Hilfiger.",
     material: "Cotton",
     shippingInfo: "Free shipping on orders over $50.00",
     size: "Medium",
-    imageGallery: [
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-2_61613.jpg",
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-3_29465.jpg",
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-4_62726.jpg",
-      "https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-5_55112.jpg",
+    //imageGallery: [
+      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-2_61613.jpg",
+      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-3_29465.jpg",
+      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-4_62726.jpg",
+      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-5_55112.jpg",
       // Add more gallery images as needed
-    ],
+    //],
   });
 }
 
-const selectedColors = ref([]);
 const pageSize = 20;
 const currentPage = ref(1);
 const searchText = ref('');
@@ -156,6 +159,12 @@ const displayedProducts = computed(() => {
   // searchbar
   if (searchText.value) {
     return products.filter((item) => item.name.toLowerCase().includes(searchText.value))
+  }
+  // Color filter
+  const selectedColors = colors.value.filter((color) => color.enabled).map((color) => color.name);
+
+  if (selectedColors.length > 0) {
+    return products.filter((item) => selectedColors.includes(item.color));
   }
   // pagination
   return products.slice(startIndex.value, endIndex.value);
