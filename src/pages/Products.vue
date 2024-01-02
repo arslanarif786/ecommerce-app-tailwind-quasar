@@ -14,8 +14,8 @@
           <div class="text-bold">Choose Price Range</div>
           <q-range
             v-model="priceRange"
-            :min="0"
-            :max="1000"
+            :min="priceRange.min"
+            :max="priceRange.max"
             :step="4"
             :left-label-value="priceRange.min + '$'"
             :right-label-value="priceRange.max + '$'"
@@ -25,16 +25,16 @@
           />
         </q-item>
 
-          <!-- Choose Color Filter -->
-          <q-item class="flex !flex-col">
+        <!-- Choose Color Filter -->
+        <q-item class="flex !flex-col">
           <div class="text-bold">Choose Color</div>
           <q-checkbox
-              v-for="color in colors"
-              :key="color.id"
-              :label="color.name"
-              v-model="color.enabled"
+            v-for="color in colors"
+            :key="color.id"
+            :label="color.name"
+            v-model="color.enabled"
           />
-          </q-item>
+        </q-item>
 
       </q-list>
     </div>
@@ -59,148 +59,90 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
 import ProductCard from '../components/ProductCard.vue';
 
-const colors = ref([
-  {
-    id: 1,
-    name: 'Black',
-    enabled: false
-  },
-  {
-    id: 2,
-    name: 'Yellow',
-    enabled: false
-  },
-  {
-    id: 3,
-    name: 'Purple',
-    enabled: false
-  },
-  {
-    id: 4,
-    name: 'Pink',
-    enabled: false
-  },
-  {
-    id: 5,
-    name: 'Brown',
-    enabled: false
-  },
-  {
-    id: 6,
-    name: 'Turquoise',
-    enabled: false
-  },
-  {
-    id: 7,
-    name: 'Orange',
-    enabled: false
-  },
-  {
-    id: 8,
-    name: 'Red',
-    enabled: false
-  },
-  {
-    id: 9,
-    name: 'Green',
-    enabled: false
-  },
-])
-
-const imagesUrlArray = [
-  'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-  'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-  'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-05.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-06.jpg',
-  'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-07.jpg',
-  'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-08.jpg'
-];
-
-const products = [];
-for (let i = 1; i <= 100; i++) {
-  const colorIndex = (i - 1) % colors.value.length;
-  const imageUrlArrayIndex = (i - 1) % imagesUrlArray.length;
-
-  products.push({
-    id: i,
-    name: `Product ${i}`,
-    href: '#',
-    imageUrl: imagesUrlArray[imageUrlArrayIndex],
-    imageAlt: `Product ${i} Image`,
-    price: `$${Math.floor(Math.random() * 500) + 50}`,
-    color: colors.value[colorIndex].name,
-    ///// you can change the color to be an array of colors
-    description: "Stylish women's jacket with a hood from Tommy Hilfiger.",
-    material: "Cotton",
-    shippingInfo: "Free shipping on orders over $50.00",
-    size: "Medium",
-    //imageGallery: [
-      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-2_61613.jpg",
-      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-3_29465.jpg",
-      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-4_62726.jpg",
-      //"https://remiks.com/media/catalog/product/cache/50dd1ff3c09846088fb44b8460cc0347/t/h/thdw0dw09060-bds-5_55112.jpg",
-      // Add more gallery images as needed
-    //],
-  });
-}
-
-
+const colors = ref([]);
 const pageSize = 20;
+const totalPages = ref(1);
+const products = ref([]);
 const currentPage = ref(1);
 const searchText = ref('');
 const priceRange = ref({
   min: 0,
-  max: 1000
+  max: 240
 });
 
-const totalPages = computed(() => Math.ceil(products.length / pageSize));
-const startIndex = computed(() => Math.max((currentPage.value - 1) * pageSize, 0));
-const endIndex = computed(() => startIndex.value + pageSize);
+const fetchProducts = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/products');
+    products.value = response.data;
+
+    // Extract unique colors from products
+    const uniqueColors = Array.from(new Set(products.value.map(product => product.color)));
+
+    // Update colors array
+    colors.value = uniqueColors.map((color, index) => ({
+      id: index + 1,
+      name: color,
+      enabled: false
+    }));
+
+    // Find the minimum and maximum prices from the API data
+    const minPrice = Math.min(...products.value.map(product => parseFloat(product.price.replace('$', ''))));
+    const maxPrice = Math.max(...products.value.map(product => parseFloat(product.price.replace('$', ''))));
+
+    // Update the priceRange values
+    priceRange.value.min = minPrice;
+    priceRange.value.max = maxPrice;
+
+    totalPages.value = Math.ceil(products.value.length / pageSize);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+};
 
 const displayedProducts = computed(() => {
-  // searchbar
-  if (searchText.value) {
-    return products.filter((item) => item.name.toLowerCase().includes(searchText.value))
+  if (!Array.isArray(products.value)) {
+    return [];
   }
-  // Color filter
+
+  const startIndex = Math.max((currentPage.value - 1) * pageSize, 0);
+  const endIndex = startIndex + pageSize;
+
+  if (searchText.value) {
+    return products.value.filter((item) => item.name.toLowerCase().includes(searchText.value));
+  }
+
   const selectedColors = colors.value.filter((color) => color.enabled).map((color) => color.name);
 
   if (selectedColors.length > 0) {
-    return products.filter((item) => selectedColors.includes(item.color));
+    return products.value.filter((item) => selectedColors.includes(item.color)).slice(startIndex, endIndex);
   }
-  // Price range filter
-  if (priceRange.value) {
+
+  if (priceRange.value && priceRange.value.min !== undefined && priceRange.value.max !== undefined) {
     const minPrice = parseFloat(priceRange.value.min);
     const maxPrice = parseFloat(priceRange.value.max);
-    console.log('minPrice:', minPrice);
-    console.log('maxPrice:', maxPrice);
 
     if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-      const filteredProducts = products.filter((item) => {
+      const filteredProducts = products.value.filter((item) => {
         const itemPrice = parseFloat(item.price.replace('$', ''));
         return itemPrice >= minPrice && itemPrice <= maxPrice;
       });
 
-      console.log('Filtered Products:', filteredProducts);
-      return filteredProducts.slice(startIndex.value, endIndex.value); // Apply pagination
+      return filteredProducts.slice(startIndex, endIndex);
     }
   }
-  // pagination
-  return products.slice(startIndex.value, endIndex.value);
-  // .filter(product => selectedColors.value.length === 0 || selectedColors.value.includes(product.color))
-});
 
+  return products.value.slice(startIndex, endIndex);
+});
 
 const updatePage = (page) => {
   currentPage.value = page;
 };
+
+onMounted(() => {
+  fetchProducts();
+});
 </script>
