@@ -10,8 +10,19 @@
         </q-item>
 
         <!-- Price Range Filter -->
-        <q-item>
-          <q-range v-model="priceRange" :min="0" :max="1000" label="Price Range" color="primary" />
+        <q-item class="flex !flex-col">
+          <div class="text-bold">Choose Price Range</div>
+          <q-range
+            v-model="priceRange"
+            :min="0"
+            :max="1000"
+            :step="4"
+            :left-label-value="priceRange.min + '$'"
+            :right-label-value="priceRange.max + '$'"
+            label-always
+            switch-label-side
+            color="primary"
+          />
         </q-item>
 
           <!-- Choose Color Filter -->
@@ -50,8 +61,6 @@
 <script setup>
 import { ref, computed } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
-
-// const colors = ref(['Black', 'Yellow', 'Purple', 'Pink', 'Brown', 'Turquoise', 'Orange', 'Red', 'Green'])
 
 const colors = ref([
   {
@@ -121,9 +130,6 @@ for (let i = 1; i <= 100; i++) {
   const colorIndex = (i - 1) % colors.value.length;
   const imageUrlArrayIndex = (i - 1) % imagesUrlArray.length;
 
-  const productColor = colors.name;
-  //const colorName = productColor ? productColor.name : 'UndefinedColor';
-
   products.push({
     id: i,
     name: `Product ${i}`,
@@ -147,9 +153,14 @@ for (let i = 1; i <= 100; i++) {
   });
 }
 
+
 const pageSize = 20;
 const currentPage = ref(1);
 const searchText = ref('');
+const priceRange = ref({
+  min: 0,
+  max: 1000
+});
 
 const totalPages = computed(() => Math.ceil(products.length / pageSize));
 const startIndex = computed(() => Math.max((currentPage.value - 1) * pageSize, 0));
@@ -165,6 +176,23 @@ const displayedProducts = computed(() => {
 
   if (selectedColors.length > 0) {
     return products.filter((item) => selectedColors.includes(item.color));
+  }
+  // Price range filter
+  if (priceRange.value) {
+    const minPrice = parseFloat(priceRange.value.min);
+    const maxPrice = parseFloat(priceRange.value.max);
+    console.log('minPrice:', minPrice);
+    console.log('maxPrice:', maxPrice);
+
+    if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+      const filteredProducts = products.filter((item) => {
+        const itemPrice = parseFloat(item.price.replace('$', ''));
+        return itemPrice >= minPrice && itemPrice <= maxPrice;
+      });
+
+      console.log('Filtered Products:', filteredProducts);
+      return filteredProducts.slice(startIndex.value, endIndex.value); // Apply pagination
+    }
   }
   // pagination
   return products.slice(startIndex.value, endIndex.value);
