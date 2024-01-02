@@ -16,6 +16,8 @@ const menuTopBar2 = [ "NEW IN", "CLOTHES", "SHOES", "BAGS", "ACCESSORIES", "BEAU
 <template>
     <q-bar class="!bg-[#2a2b32] text-white">
         <a href="#newsletter" class="text-sm/[20px]">Sign Up for Newsletter</a>
+        <RouterLink to="/products" class="text-sm/[20px] ml-5">Products</RouterLink>
+        <RouterLink to="/dashboard" class="gt-xs text-sm/[20px] ml-10">Dashboard</RouterLink>
         <RouterLink v-if="loginUser" to="/products" class="text-sm/[20px] ml-5">Products</RouterLink>
         <RouterLink v-if="loginUser" to="/dashboard" class="gt-xs text-sm/[20px] ml-10">Dashboard</RouterLink>
         <q-space />
