@@ -99,19 +99,32 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
-const slide = ref(1)
+const slide = ref(1);
+const products = ref([]);
 
-onMounted(() => {
-  console.log(products)
-})
+onMounted(async () => {
+  try {
+    // Fetch products from the API
+    const response = await fetch('http://localhost:3000/products');
+    const data = await response.json();
+
+    // Update the products ref with the fetched data
+    products.value = data;
+
+    // Log the fetched products
+    console.log(products.value);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+});
 
 const interval = setInterval(() => {
-  slide.value = (slide.value % carousel.length) + 1
-}, 5000)
+  slide.value = (slide.value % products.value.length) + 1;
+}, 5000);
 
 onUnmounted(() => {
   clearInterval(interval);
-})
+});
 
 const carousel = [{
     src: "https://remiks.com/media/wysiwyg/baneri/2023-12/dec_Z_SALE_Z_P1.jpg",
@@ -136,117 +149,4 @@ const carousel = [{
     src: "https://remiks.com/media/wysiwyg/baneri/2023-12/sept_PARTNERI_mobile.jpg",
     url: "#"
   }]
-
-  const products = [
-  {
-    id: 3,
-    name: 'Casual Jeans',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg',
-    imageAlt: "Front of men's Casual Jeans in blue.",
-    price: '$55',
-    color: 'Blue',
-  },
-  {
-    id: 6,
-    name: 'Formal Shirt',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-    imageAlt: "Front of men's Formal Shirt in white.",
-    price: '$50',
-    color: 'White',
-  },
-  {
-    id: 7,
-    name: 'Leather Jacket',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-    imageAlt: "Front of men's Leather Jacket in black.",
-    price: '$120',
-    color: 'Black',
-  },
-  {
-    id: 5,
-    name: 'Summer Shorts',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg',
-    imageAlt: "Front of men's Summer Shorts in yellow.",
-    price: '$30',
-    color: 'Yellow',
-  },
-  {
-    id: 8,
-    name: 'Running Shoes',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-    imageAlt: "Front of men's Running Shoes in blue.",
-    price: '$80',
-    color: 'Blue',
-  },
-  {
-    id: 9,
-    name: 'Denim Jacket',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt: "Front of men's Denim Jacket in light blue.",
-    price: '$90',
-    color: 'Light Blue',
-  },
-  {
-    id: 2,
-    name: 'Classic Hoodie',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Classic Hoodie in gray.",
-    price: '$45',
-    color: 'Gray',
-  },
-  {
-    id: 10,
-    name: 'Winter Coat',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-05.jpg',
-    imageAlt: "Front of men's Winter Coat in gray.",
-    price: '$150',
-    color: 'Gray',
-  },
-  {
-    id: 11,
-    name: 'Slim Fit Pants',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-06.jpg',
-    imageAlt: "Front of men's Slim Fit Pants in black.",
-    price: '$60',
-    color: 'Black',
-  },
-  {
-    id: 4,
-    name: 'Sporty Sneakers',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg',
-    imageAlt: "Front of Sporty Sneakers in white.",
-    price: '$65',
-    color: 'White',
-  },
-  {
-    id: 12,
-    name: 'Slim frtFit Pants',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-07.jpg',
-    imageAlt: "Front of men's Slim Fit Pants in black.",
-    price: '$80',
-    color: 'Black',
-  },
-  {
-    id: 13,
-    name: 'Fit Pants',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-08.jpg',
-    imageAlt: "Front of men's Slim Fit Pants in black.",
-    price: '$230',
-    color: 'Black',
-  }
-]
-
-console.log(products)
 </script>
