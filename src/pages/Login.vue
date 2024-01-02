@@ -1,5 +1,5 @@
 <template>
-      <q-form @submit.prevent="login" class="m-5 flex flex-center flex-col">
+      <q-form @submit.prevent="loginUser" class="m-5 flex flex-center flex-col">
         <div class="px-[10px] py-[10px] rounded-md border border-gray-600">
           <q-input
             v-model="username"
@@ -25,23 +25,30 @@
   </template>
   <script setup>
   import { ref } from 'vue'
-  // import { useRouter } from 'vue-router'
-  // const router = useRouter()
+  import axios from 'axios'
 
   const username = ref('')
   const password = ref('')
 
-  const login = () => {
-    const loginObj = { username: username.value, password: password.value }
+const loginUser = async () => {
+    const user = { 
+      username: username.value, 
+      password: password.value
+    }
+    const response = await axios.get(`http://localhost:3000/users?username=${user.username}&password=${user.password}`)
+    console.log(response)
+    const responseLogin = await axios.post('http://localhost:3000/login', user)
+    console.log(responseLogin)
+
     const users = JSON.parse(localStorage.getItem('users'))
     // comparison
-    const matched = users.find(item => item.username === loginObj.username && item.password === loginObj.password)
-    
-    // redirect
-    if (matched) {
-      localStorage.setItem('loginUser', JSON.stringify(loginObj))
-      window.location.href = '/'
-      // router.push({path: `/`})
+    const matchedLocalStorage = users.find(item => item.username === user.username && item.password === user.password)
+    const matchedLoginApi = await axios.get(`http://localhost:3000/login?username=${user.username}&password=${user.password}`)
+    const matchedLoginApiRespons = matchedLoginApi.data.length > 0
+    // matched and redirect
+    if (matchedLocalStorage && matchedLoginApiRespons) {
+      localStorage.setItem('loginUser', JSON.stringify(user))
+      window.location.href = '/dashboard'
     } else {
       console.log('invalid username or incorrect password')
     }

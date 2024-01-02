@@ -1,5 +1,5 @@
 <template>
-    <q-form @submit.prevent="register" class="m-5 flex flex-center flex-col">
+    <q-form @submit.prevent="registerUser" class="m-5 flex flex-center flex-col">
       <div class="px-[10px] py-[10px] rounded-md border border-gray-600 flex-col">
           <q-input
             v-model="username"
@@ -60,6 +60,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthUser} from '../stores/authUser.js'
+import axios from 'axios'
 
 const authUser = useAuthUser()
 
@@ -72,17 +73,7 @@ const email = ref('')
 const phone = ref('')
 const address = ref('')
 
-const register = () => {
-  console.log('Register with:', { 
-    username: username.value, 
-    password: password.value, 
-    confirmPassword: 
-    confirmPassword.value, email: 
-    email.value, phone: 
-    phone.value, 
-    address: address.value, 
-    right: right.value
-  })
+const registerUser = async () => {
   const user = { 
     username: username.value, 
     password: password.value, 
@@ -93,7 +84,10 @@ const register = () => {
     address: address.value, 
     right: right.value
   }
+  const response = await axios.post('http://localhost:3000/users', user)
   authUser.users.push(user)
   localStorage.setItem('users', JSON.stringify(authUser.users))
+  window.location.href = '/dashboard'
+  console.log(response)
 }
 </script>
